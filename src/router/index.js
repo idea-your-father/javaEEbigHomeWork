@@ -6,6 +6,7 @@ import LoginView from "@/views/login/LoginView";
 
 import NavLeft from "@/views/tabbar/NavLeft";
 import NavExample from "@/views/tabbar/NavExample";
+import LoginPage from "@/views/login/LoginPage";
 
 
 Vue.use(Router)
@@ -14,8 +15,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'LoginView',
-      component: LoginView
+      name: 'LoginPage',
+      component: LoginPage
     },
     {
       path: '/nav',

@@ -19,7 +19,7 @@
   }
 </script>
 
-<style lang="less" scoped>
+<style  scoped>
   .el-header {
     background-color: #373d41;
   }
