@@ -15,13 +15,13 @@
           <!-- 如果没有提供的话，就去阿里图标库下载          -->
           <el-input prefix-icon="el-icon-user" v-model="loginInfo.username"></el-input>
         </el-form-item>
-        <el-form-item comment="密码"  prop="password">
-          <el-input prefix-icon="el-icon-warning-outline"  v-model="loginInfo.password" type="password"></el-input>
+        <el-form-item comment="密码" prop="password">
+          <el-input prefix-icon="el-icon-warning-outline" v-model="loginInfo.password" type="password"></el-input>
         </el-form-item>
 
         <el-form-item class="btn-line">
-          <el-button type="success">登录</el-button>
-          <el-button type="info"  @click="this.$refs.loginFormRef.resetFields">重置</el-button>
+          <el-button type="success" @click="doPost">登录</el-button>
+          <el-button type="info" @click="resetFields">重置</el-button>
 
         </el-form-item>
 
@@ -41,17 +41,54 @@
           username: '',
           password: ''
         },
-      //  用户输入校验
-        inputRules:{
-          username:[
-            {required:true,message:'请输入登录账号',trigger:'blur'},
-            {min:3,max:20,message: "长度在3到20个字符",trigger: 'blur'}
+        //  用户输入校验
+        inputRules: {
+          username: [
+            {required: true, message: '请输入登录账号', trigger: 'blur'},
+            {min: 1, max: 20, message: "长度在1到20个字符", trigger: 'blur'}
           ],
           password: [
-            {required:true,message:'请输入登录密码',trigger:'blur'},
-            {min:5,max:20,message: "长度在5到20个字符",trigger: 'blur'}
+            {required: true, message: '请输入登录密码', trigger: 'blur'},
+            {min: 1, max: 20, message: "长度在1到3个字符", trigger: 'blur'}
           ]
         }
+      }
+    },
+    methods: {
+      doPost() {
+        this.$refs.loginFormRef.validate(async valid => {
+          // console.log(123)
+          console.log(valid);
+          let result = false;
+          if (!valid) return;
+          try {
+            let postData = {
+              name: this.loginInfo.username,
+              password: this.loginInfo.password
+            }
+            const {data: result} = await this.$http.post("/login", postData);
+            console.log(result)
+            if(result.code==200) {
+              this.$message.success("登录成功")
+              window.sessionStorage.setItem('token',result.data)
+              await this.$router.push('/nav2')
+            }else{
+              this.$message.error("登录失败，请求重新登录")
+            }
+          } catch (e) {
+            console.log('异常')
+            // this.$message.error("网络有问题")
+            this.$message.error("网络问题，请求失败")
+            // let token = '123'
+            // window.sessionStorage.setItem('token',token)
+            // result = true;
+          }
+
+          //将 result.data 拿出来，并且打印
+        })
+      },
+      resetFields() {
+        this.$refs.loginFormRef.resetFields();
       }
     }
   }
