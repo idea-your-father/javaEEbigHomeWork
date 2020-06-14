@@ -47,13 +47,25 @@
           }
 
         ],
-        totalCount:0
+        totalCount:0,
+        query:{name:'',letter:''}
       }
-    },
+    }
+
+    ,
     methods:{
       async requestFirstPage(page,size){
         await this.getTotalCount()
-        let {data:array} = await webUtil.showBrand(page,size)
+        // let {data:array} = await webUtil.showBrand(page,size)
+        let name = ''
+        let letter = ''
+        console.log(this.query)
+        if(this.query!=undefined) {
+          name = this.query.name==undefined?'':this.query.name
+          letter = this.query.letter==undefined? '':this.query.letter
+          this.$log.print(name,letter)
+        }
+        let {data:array} = await webUtil.searchLike(page,size,name,letter)
 
         this.$log.print('$brand,,',array)
         this.tableData = array
@@ -65,6 +77,9 @@
         let {data:total} = await webUtil.getTotalCount()
         this.totalCount = total
         this.$emit('getTotalCount',total)
+      },
+      setQuery(query) {
+        this.query = query
       }
 
     },

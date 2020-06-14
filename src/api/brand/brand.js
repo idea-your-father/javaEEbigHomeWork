@@ -13,6 +13,14 @@ export const webUtil = {
   },
   getTotalCount() {
     return axios.get('/brand/all/_count')
+  },
+  searchLike(page,size,name,letter) {
+    if(name==''&&letter=='') {
+      return this.showBrand(page,size)
+
+    }
+
+    return axios.get(`/brand?page=${page}&size=${size}&name=${name}&letter=${letter}`)
   }
 
 }
