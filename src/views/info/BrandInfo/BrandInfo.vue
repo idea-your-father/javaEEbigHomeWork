@@ -1,44 +1,54 @@
 <template>
-    <div>
-      <el-table :data="tableData">
-        <el-table-column label="名称"         prop="title"     ></el-table-column>
+  <div>
+    <!--      商品分类组件-->
+    <search-input-header></search-input-header>
+    <data-table-card ref="dataTable" @requestPage="updatePage" @getTotalCount="updateCount"></data-table-card>
+    <common-pagination @listenChangePage="changePage" :total-count="totalCount" :page="page"
+                       :size="size"></common-pagination>
 
-        <el-table-column label="分类"         prop="category"     ></el-table-column>
-        <el-table-column label="品牌"         prop="brand"     ></el-table-column>
-        <el-table-column label="可出售"       prop="saleable"     ></el-table-column>
-        <el-table-column label="上次更新时间"  prop="lastUpdateTime"     ></el-table-column>
-      </el-table>
-    </div>
+
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "BrandInfo",
-      data() {
-        return {
-          //获取用户列表的数据
-          queryInfo:{
-            page:1,
-            size:5
-          },
-          tableData: [{
-            lastUpdateTime: '2016-05-02',
-            title: '小米9',
-            saleable: '是',
-            category: '手机',
+  import DataTableCard from "./components/DataTableCard";
+  import SearchInputHeader from "./components/SearchInputHeader";
+  import CommonPagination from "../../../components/CommonPagination";
 
-          }]
-
-        }
-      },
-      mounted() {
-      },
-      methods:{
-
+  export default {
+    name: "BrandInfo",
+    data() {
+      return {
+        page: 1,
+        size: 5,
+        totalCount: 0
       }
+    },
+    methods: {
+      updatePage(page, size) {
+        this.page = page
+        this.size = size
+      },
+      updateCount(total) {
+        this.totalCount = total
+      },
+      changePage(pageSizeCount) {
+        this.$refs.dataTable.requestFirstPage(pageSizeCount.page, pageSizeCount.size)
+      }
+    },
+    mounted() {
+      this.$refs.dataTable.requestFirstPage(1,5)
+    },
+    components: {
+      DataTableCard,
+      SearchInputHeader,
+      CommonPagination
     }
+
+  }
 </script>
 
 <style scoped>
+
 
 </style>

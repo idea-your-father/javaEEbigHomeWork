@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 //需要再 main这里引入全局样式表 ，并且注册
 import '@/assets/css/global.css'
-
+import {logger} from '@/common/utils/PrintUtil.js'
 
 import 'element-ui/lib/theme-chalk/index.css';
 
@@ -14,7 +14,8 @@ import {
   Menu, MenuItem, MenuItemGroup, Submenu,
   Table, TableColumn,
   Switch,
-  Tooltip, Pagination, Card, Breadcrumb, BreadcrumbItem, Row, Col
+  Tooltip, Pagination, Card, Breadcrumb, BreadcrumbItem, Row, Col,
+  Dialog
 
 } from "element-ui";
 
@@ -43,6 +44,7 @@ Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
 Vue.use(Row)
 Vue.use(Col)
+Vue.use(Dialog)
 Vue.prototype.$message = Message
 
 
@@ -64,15 +66,25 @@ axios.interceptors.request.use(config=>{
     "Access-Control-Allow-Headers": "X-Requested-With,Content-Type",
     "Access-Control-Allow-Methods":"PUT,POST,GET,DELETE,OPTIONS"
   }
-  console.log(config)
+  console.log("request -->"+JSON.stringify(config))
   return config
 })
 
-
+axios.interceptors.response.use(response => {
+    //拦截响应，做统一处理
+    console.log("resp -->"+JSON.stringify(response.data))
+    return response
+  },
+  //接口错误状态处理，也就是说无响应时的处理
+  error => {
+    return Promise.reject(error.response.status) // 返回接口返回的错误信息
+  }
+)
 
 
 Vue.prototype.$http = axios;
-
+Vue.prototype.$log = logger
+// Vue.prototype.$log.print = print;
 
 Vue.config.productionTip = false
 

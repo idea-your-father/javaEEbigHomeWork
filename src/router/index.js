@@ -10,8 +10,8 @@ import LoginPage from "@/views/login/LoginPage";
 import Home from "../views/home/Home";
 import NavExample from "../views/tabbar/NavExample";
 import ShopInfo from "../views/info/ShopInfo/ShopInfo";
-import Category from "../views/info/Category/Category";
-import BrandInfo from "../views/info/BrandInfo/BrandInfo";
+import Category from "../views/info/BrandInfo/BrandInfo";
+import BrandInfo from "../views/info/Category/Category";
 // Router.prototype.push = function push(location) {
 //   return Router.call(this, location).catch(err => err)
 // }

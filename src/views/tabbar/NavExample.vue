@@ -39,7 +39,7 @@
             <el-menu-item-group>
               <template slot="title">商品信息</template>
               <el-menu-item index="/shop">商品列表</el-menu-item>
-<!--              <el-menu-item index="/category">商品分类</el-menu-item>-->
+              <el-menu-item index="/brand">品牌分类</el-menu-item>
 <!--              <el-menu-item index="/category">商品类型</el-menu-item>-->
 <!--              <el-menu-item index="/brand">品牌管理</el-menu-item>-->
 <!--              <el-menu-item index="/category">分类管理</el-menu-item>-->
