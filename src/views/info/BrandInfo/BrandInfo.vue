@@ -1,15 +1,20 @@
 <template>
   <div>
     <!--      商品分类组件-->
-    <search-input-header @_search="searchInfo"></search-input-header>
+    <search-input-header @_search="searchInfo">
+
+    </search-input-header>
     <data-table-card
 
       ref="dataTable"
-      @requestPage="updatePage" @getTotalCount="updateCount">
+      @requestPage="updatePage"
+      @getTotalCount="updateCount">
 
     </data-table-card>
     <common-pagination @listenChangePage="changePage" :total-count="totalCount" :page="page"
-                       :size="size"></common-pagination>
+                       :size="size">
+
+    </common-pagination>
 
 
   </div>
@@ -27,10 +32,7 @@
         page: 1,
         size: 5,
         totalCount: 0,
-        query:{
-          brand:'',
-          letter:''
-        }
+
       }
     },
     methods: {
@@ -45,7 +47,7 @@
         this.$refs.dataTable.requestFirstPage(pageSizeCount.page, pageSizeCount.size)
       },
       searchInfo(json) {
-        this.$log.print(json)
+        this.$log.print('11',json)
 
         let dataForm = this.$refs.dataTable
         dataForm.setQuery(json)

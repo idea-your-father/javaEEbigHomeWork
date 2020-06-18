@@ -12,6 +12,7 @@ import NavExample from "../views/tabbar/NavExample";
 import ShopInfo from "../views/info/ShopInfo/ShopInfo";
 import BrandInfo from "../views/info/BrandInfo/BrandInfo";
 import Category from "../views/info/Category/Category";
+import SkuForm from "../views/info/SkuInfoAdd/SkuForm";
 // Router.prototype.push = function push(location) {
 //   return Router.call(this, location).catch(err => err)
 // }
@@ -58,7 +59,10 @@ const router = new Router({
       },{
         path: '/brand',
         component: BrandInfo
-      },
+      },{
+        path:'/sku',
+        component: SkuForm
+      }
 
 
       ]

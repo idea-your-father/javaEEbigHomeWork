@@ -20,6 +20,8 @@
 </template>
 
 <script>
+  import {spuRequest} from "../../../../api/spu/spuRequest";
+
   export default {
     name: "ShopInfoSearch",
     data() {
@@ -34,7 +36,43 @@
     },
     methods:{
       onSubmit() {
+        let query = {
+          'brandName':this.searchQuery.brand,
+          'categoryName':this.searchQuery.category,
+          'title':this.searchQuery.title
+        }
+        spuRequest.fuzzySearch(query.categoryName,query.brandName,query.title,1,5)
+        .then(res=>{
+          // this.$log.print(res)
+          this.callParentNode(res.data,query)
 
+        })
+
+      },
+      callParentNode(data) {
+        this.$emit('callParentNode',data)
+      },
+      callRequest(page,size) {
+        let query = {
+          'brandName':this.searchQuery.brand,
+          'categoryName':this.searchQuery.category,
+          'title':this.searchQuery.title
+        }
+        spuRequest.fuzzySearch(query.categoryName,query.brandName,query.title,page,size)
+                .then(res=>{
+                  // this.$log.print(res)
+                  this.callParentNode(res.data,null)
+
+                })
+      },
+      haveCondition() {
+
+        //searchQuery: {
+      //   title: '',
+      //           category:'',
+      //           brand:''
+      // }
+        return this.searchQuery.title!='' || this.searchQuery.category!='' || this.searchQuery.brand!=''
       }
     }
   }

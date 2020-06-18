@@ -15,7 +15,10 @@ import {
   Table, TableColumn,
   Switch,
   Tooltip, Pagination, Card, Breadcrumb, BreadcrumbItem, Row, Col,
-  Dialog
+  Dialog,Select,Option,
+  Steps,Step,
+  Tabs,TabPane,
+  Tree
 
 } from "element-ui";
 
@@ -45,12 +48,20 @@ Vue.use(BreadcrumbItem)
 Vue.use(Row)
 Vue.use(Col)
 Vue.use(Dialog)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(Steps)
+Vue.use(Step)
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Tree)
+
 Vue.prototype.$message = Message
 
 
 import axios from 'axios'
 import el from "element-ui/src/locale/lang/el";
-axios.defaults.baseURL = '/api'
+axios.defaults.baseURL = '/'
 
 axios.interceptors.request.use(config=>{
   //请求头的token 从本地缓存中获取

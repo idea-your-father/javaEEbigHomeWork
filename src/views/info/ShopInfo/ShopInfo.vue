@@ -3,10 +3,10 @@
     <!--    面包屑-->
     <shop-info-head></shop-info-head>
     <!--    搜索框-->
-    <shop-info-search></shop-info-search>
-<!--  POPup  -->
-    <pop-up ref="popup"  @close="closePopUp"></pop-up>
-<!--    <el-button></el-button>-->
+    <shop-info-search ref="infoSearch" @callParentNode="receiveChildSearch"></shop-info-search>
+    <!--  POPup  -->
+    <pop-up ref="popup" @close="closePopUp"></pop-up>
+    <!--    <el-button></el-button>-->
 
     <!--  数据表格  -->
     <el-table :data="tableData" border stripe>
@@ -57,6 +57,7 @@
       </el-table-column>
 
     </el-table>
+
     <!--    分页-->
     <shop-info-pagination :total-count="this.tableParam.totalCount" :page="tableParam.page" :size="tableParam.size"
                           @listenChangePage="listenChangePage"
@@ -71,6 +72,7 @@
   import ShopInfoSearch from "./components/ShopInfoSearch";
   import ShopInfoPagination from "./components/ShopInfoPagination";
   import PopUp from "./components/PopUp";
+
   export default {
     name: "ShopInfo",
     data() {
@@ -83,7 +85,8 @@
         },
         queryInfo: {
           page: 1,
-          size: 5
+          size: 5,
+          // searchCondition:1
         },
         tableData: [{
           lastUpdateTime: '2016-05-02',
@@ -93,8 +96,8 @@
           brand: '小米'
 
         }],
-        PopUpVisible:false,
-        PopUpShowSpuId:0
+        PopUpVisible: false,
+        PopUpShowSpuId: 0
 
       }
     },
@@ -106,7 +109,13 @@
 
     },
     methods: {
-      openDialog(spuId){
+      receiveChildSearch(searchResult,query) {
+        //search
+        this.$log.print(searchResult)
+        this.tableData = searchResult.data
+        this.tableParam.totalCount = searchResult.total
+      },
+      openDialog(spuId) {
         this.PopUpVisible = true
         console.log(this.$refs.popup)
         this.$refs.popup.openDialog(spuId)
@@ -135,27 +144,35 @@
         console.log(result)
       },
       listenChangePage(param) {
-        console.log('result --->',param)
-        this.requestData(param.page,param.size)
+        //if
+        let search = this.$refs.infoSearch.haveCondition()
+        if(search) {
+          this.$refs.infoSearch.callRequest(param.page,param.size)
+          return
+        }
+
+        //else
+        console.log('result --->', param)
+        this.requestData(param.page, param.size)
         this.initTotalCount()
 
       },
 
-      changeStatus(event,obj,idx) {
+      changeStatus(event, obj, idx) {
         // this.$log.print("改变状态->",obj,"->"+idx)
-        this.changeStatus2(event,obj)
+        this.changeStatus2(event, obj)
       },
-      async changeStatus2(event,obj) {
+      async changeStatus2(event, obj) {
         let status = obj.saleable
         let spuId = obj.id
-        this.$log.print("改变状态->",status,"->"+spuId)
+        this.$log.print("改变状态->", status, "->" + spuId)
         let req = {
-          'id':spuId,
-          'saleable':status.toString()
+          'id': spuId,
+          'saleable': status.toString()
         }
 
-        let resp = await this.$http.put("/spu/spu/saleable",req)
-        this.$log.print('response',resp)
+        let resp = await this.$http.put("/spu/spu/saleable", req)
+        this.$log.print('response', resp)
       }
       ,
       async requestData(page, size) {
